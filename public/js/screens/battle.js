@@ -13,15 +13,101 @@ import { isDeckComplete } from '../models.js';
 import { orientation } from '../orientation.js';
 import { C2S, S2C, NET_STATE } from '../protocol.js';
 
+const _S = (s) => `data:image/svg+xml,${encodeURIComponent(s)}`;
 const STAMPS = [
-  { id: 'like',   emoji: '👍', label: 'いいね' },
-  { id: 'dame',   emoji: '🙅', label: 'だめぇぇぇ！' },
-  { id: 'unko',   emoji: '💩', label: 'うんこ！' },
-  { id: 'lol',    emoji: '😂', label: '爆笑' },
-  { id: 'point',  emoji: '👉', label: '指さし' },
-  { id: 'chinko', emoji: '🍆', label: 'ちんこ' },
-  { id: 'win',    emoji: '🏆', label: '勝ち！' },
-  { id: 'lose',   emoji: '😭', label: '負け' },
+  { id: 'like', label: 'いいね', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#1a3a7a"/>
+    <rect x="13" y="38" width="18" height="18" rx="5" fill="#f59e0b"/>
+    <rect x="27" y="14" width="13" height="28" rx="6" fill="#f59e0b"/>
+    <rect x="19" y="34" width="22" height="10" fill="#f59e0b"/>
+    <ellipse cx="33" cy="19" rx="5" ry="2.5" fill="rgba(255,255,255,0.25)"/>
+    <circle cx="50" cy="11" r="2.5" fill="#f59e0b" opacity="0.7"/>
+    <circle cx="55" cy="22" r="1.5" fill="#f59e0b" opacity="0.5"/>
+    </svg>`) },
+  { id: 'dame', label: 'だめぇぇぇ！', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#7a1a1a"/>
+    <circle cx="32" cy="36" r="21" fill="#f87171"/>
+    <line x1="21" y1="27" x2="29" y2="35" stroke="#7a0000" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="29" y1="27" x2="21" y2="35" stroke="#7a0000" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="35" y1="27" x2="43" y2="35" stroke="#7a0000" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="43" y1="27" x2="35" y2="35" stroke="#7a0000" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M21 44 Q32 39 43 44" stroke="#7a0000" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <line x1="18" y1="21" x2="30" y2="26" stroke="#7a0000" stroke-width="3" stroke-linecap="round"/>
+    <line x1="46" y1="21" x2="34" y2="26" stroke="#7a0000" stroke-width="3" stroke-linecap="round"/>
+    </svg>`) },
+  { id: 'unko', label: 'うんこ！', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#3d1c02"/>
+    <ellipse cx="32" cy="53" rx="19" ry="7" fill="#92400e"/>
+    <ellipse cx="32" cy="45" rx="15" ry="9" fill="#92400e"/>
+    <ellipse cx="32" cy="37" rx="11" ry="8" fill="#a16207"/>
+    <ellipse cx="32" cy="29" rx="8" ry="7" fill="#a16207"/>
+    <ellipse cx="33" cy="21" rx="5.5" ry="6" fill="#b45309"/>
+    <ellipse cx="34" cy="14" rx="3.5" ry="5" fill="#b45309"/>
+    <circle cx="26" cy="45" r="2.5" fill="white"/>
+    <circle cx="38" cy="45" r="2.5" fill="white"/>
+    <circle cx="27" cy="46" r="1.2" fill="#3d1c02"/>
+    <circle cx="39" cy="46" r="1.2" fill="#3d1c02"/>
+    <path d="M25 50 Q32 54 39 50" stroke="#3d1c02" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="24" rx="4" ry="2.5" fill="#fbbf24" opacity="0.7" transform="rotate(-40 45 24)"/>
+    </svg>`) },
+  { id: 'lol', label: '爆笑', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#78350f"/>
+    <circle cx="32" cy="34" r="22" fill="#fbbf24"/>
+    <path d="M19 30 Q24 26 29 30" stroke="#92400e" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M35 30 Q40 26 45 30" stroke="#92400e" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M17 40 Q32 57 47 40" fill="#92400e"/>
+    <path d="M17 40 Q32 46 47 40" fill="#fbbf24"/>
+    <ellipse cx="14" cy="38" rx="3" ry="5" fill="#60a5fa" opacity="0.85"/>
+    <ellipse cx="50" cy="38" rx="3" ry="5" fill="#60a5fa" opacity="0.85"/>
+    <ellipse cx="26" cy="22" rx="3" ry="2" fill="rgba(255,255,255,0.35)"/>
+    </svg>`) },
+  { id: 'point', label: '指さし', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#1a2a4a"/>
+    <rect x="6" y="33" width="24" height="18" rx="6" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/>
+    <rect x="26" y="22" width="26" height="14" rx="7" fill="#fde68a" stroke="#f59e0b" stroke-width="1.5"/>
+    <line x1="50" y1="22" x2="59" y2="15" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="52" y1="26" x2="61" y2="23" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="51" y1="31" x2="61" y2="31" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`) },
+  { id: 'chinko', label: 'ちんこ', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#2d1b5e"/>
+    <ellipse cx="32" cy="43" rx="15" ry="18" fill="#7c3aed"/>
+    <ellipse cx="28" cy="33" rx="7" ry="9" fill="#8b5cf6"/>
+    <rect x="28" y="18" width="8" height="13" rx="4" fill="#15803d"/>
+    <path d="M32 21 Q43 14 45 23" stroke="#16a34a" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M32 21 Q21 12 19 21" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <ellipse cx="24" cy="37" rx="3" ry="6" fill="rgba(255,255,255,0.2)" transform="rotate(-15 24 37)"/>
+    </svg>`) },
+  { id: 'win', label: '勝ち！', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#78350f"/>
+    <path d="M18 10 L46 10 L46 34 Q46 48 32 48 Q18 48 18 34 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M18 14 Q8 14 8 26 Q8 36 18 36" stroke="#f59e0b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M46 14 Q56 14 56 26 Q56 36 46 36" stroke="#f59e0b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <rect x="27" y="48" width="10" height="8" rx="1" fill="#fbbf24"/>
+    <rect x="18" y="54" width="28" height="7" rx="3.5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="32" y="37" text-anchor="middle" font-size="18" fill="#92400e" font-family="sans-serif">★</text>
+    </svg>`) },
+  { id: 'lose', label: '負け', src: _S(
+    `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="64" rx="14" fill="#0f1729"/>
+    <circle cx="32" cy="34" r="22" fill="#60a5fa" stroke="#3b82f6" stroke-width="2"/>
+    <circle cx="22" cy="29" r="4.5" fill="white"/>
+    <circle cx="42" cy="29" r="4.5" fill="white"/>
+    <circle cx="23" cy="31" r="2" fill="#1e3a8a"/>
+    <circle cx="43" cy="31" r="2" fill="#1e3a8a"/>
+    <path d="M18 46 Q32 54 46 46" stroke="#1e3a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M20 33 Q17 42 18 50" stroke="#bfdbfe" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M44 33 Q47 42 46 50" stroke="#bfdbfe" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <ellipse cx="19" cy="49" rx="2" ry="3" fill="#93c5fd" opacity="0.8"/>
+    <ellipse cx="45" cy="49" rx="2" ry="3" fill="#93c5fd" opacity="0.8"/>
+    </svg>`) },
 ];
 
 export class BattleScreen extends Screen {
@@ -654,11 +740,11 @@ export class BattleScreen extends Screen {
 
     return el('div.stamp-area', {},
       recvData ? el('div.stamp-popup stamp-opp', {},
-        el('span.stamp-emoji', {}, recvData.emoji),
+        el('img.stamp-img', { src: recvData.src, alt: recvData.label }),
         el('span.stamp-label', {}, recvData.label),
       ) : null,
       sentData ? el('div.stamp-popup stamp-me', {},
-        el('span.stamp-emoji', {}, sentData.emoji),
+        el('img.stamp-img', { src: sentData.src, alt: sentData.label }),
         el('span.stamp-label', {}, sentData.label),
       ) : null,
       el('button.stamp-btn', {
@@ -673,7 +759,7 @@ export class BattleScreen extends Screen {
           onclick: () => this._sendStamp(item.id),
           title: item.label,
         },
-          el('span.stamp-emoji-sm', {}, item.emoji),
+          el('img.stamp-icon', { src: item.src, alt: item.label }),
           el('span.stamp-choice-label', {}, item.label),
         )),
       ) : null,

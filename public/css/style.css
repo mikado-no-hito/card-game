@@ -920,7 +920,7 @@ section.game { position: relative; }
   transition: background .12s, border-color .12s;
 }
 .stamp-choice:hover { background: rgba(74,128,255,.15); border-color: var(--border-hi); }
-.stamp-emoji-sm { font-size: 1.6rem; line-height: 1; }
+.stamp-icon { width: 38px; height: 38px; display: block; image-rendering: auto; }
 .stamp-choice-label { font-size: .58rem; color: var(--text-dim); text-align: center; line-height: 1.2; }
 
 .stamp-popup {
@@ -930,7 +930,7 @@ section.game { position: relative; }
 }
 .stamp-popup.stamp-opp { top: 20%; animation: stampPopDown 2.5s ease forwards; }
 .stamp-popup.stamp-me  { bottom: 70px; animation: stampPopUp 2.5s ease forwards; }
-.stamp-popup .stamp-emoji { font-size: 3.8rem; line-height: 1; }
+.stamp-img { width: 80px; height: 80px; display: block; }
 .stamp-popup .stamp-label {
   font-size: .78rem; font-weight: 700; color: #fff;
   text-shadow: 0 1px 4px rgba(0,0,0,.9);
