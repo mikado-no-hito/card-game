@@ -889,3 +889,15 @@ section.game {
   .phase-select .bcard { max-height: 120px; }
   .reveal-card { max-height: 180px; }
 }
+
+/* スマホ/iPad 縦向き：バトル画面をスクロール可能に */
+@media (orientation: portrait) and (max-width: 1024px) {
+  section.game { overflow-y: auto; }
+  .phase-select { flex: none; overflow: visible; }
+  .phase-select > .zone,
+  .phase-select > .reveal-center { flex: none; min-height: unset; }
+  .phase-select .zone .hand { flex: none; min-height: unset; }
+  .phase-select .bcard,
+  .phase-select .bcard.back { width: 80px; height: auto; max-height: unset; }
+  .phase-prep { flex: none; overflow: visible; }
+}
