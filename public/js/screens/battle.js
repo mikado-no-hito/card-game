@@ -12,6 +12,7 @@ import { setCardImage } from '../cardImage.js';
 import { isDeckComplete } from '../models.js';
 import { orientation } from '../orientation.js';
 import { C2S, S2C, NET_STATE } from '../protocol.js';
+import { STANDARD_DECK, STANDARD_CARDS } from '../standardDeck.js';
 
 const _S = (s) => `data:image/svg+xml,${encodeURIComponent(s)}`;
 const STAMPS = [
@@ -171,6 +172,11 @@ export class BattleScreen extends Screen {
   _resolveSelectedDeck(id) {
     const did = id || this.selectedDeckId;
 
+    // スタンダードデッキ
+    if (did === 'standard') {
+      return { deck: STANDARD_DECK, cards: STANDARD_CARDS };
+    }
+
     // ランダムデッキ
     if (did === 'random') {
       if (!this.randDeck) {
@@ -215,7 +221,11 @@ export class BattleScreen extends Screen {
     const deckSelect = el('select', {
       onchange: (e) => {
         const v = e.target.value;
-        if (v === 'random') {
+        if (v === 'standard') {
+          this.selectedDeckId = 'standard';
+          this.randDeck = null;
+          this._renderLobby();
+        } else if (v === 'random') {
           const cards = this._makeRandomDeck();
           if (cards) {
             this.randDeck = cards;
@@ -231,13 +241,16 @@ export class BattleScreen extends Screen {
         }
       },
     },
-      el('option', { value: '' }, decks.length ? 'デッキを選択…' : 'デッキがありません'),
+      el('option', { value: '' }, decks.length ? 'デッキを選択…' : 'デッキを選択…'),
+      el('option', { value: 'standard' }, '📦 スタンダードデッキ（初心者用）'),
       ...ready.map(({ d, ok }) => el('option', { value: d.id }, `${d.name}${ok ? '' : '（未完成）'}`)),
       decks.length > 0 ? el('option', { value: 'random' }, '🎲 ランダムデッキ（自動生成）') : null,
     );
 
     // 選択状態を反映
-    if (this.selectedDeckId === 'random') {
+    if (this.selectedDeckId === 'standard') {
+      deckSelect.value = 'standard';
+    } else if (this.selectedDeckId === 'random') {
       deckSelect.value = 'random';
     } else if (this.selectedDeckId) {
       deckSelect.value = this.selectedDeckId;
@@ -506,6 +519,7 @@ export class BattleScreen extends Screen {
       },
     },
       el('option', { value: '' }, '（変更する場合は選択）'),
+      el('option', { value: 'standard' }, '📦 スタンダードデッキ'),
       ...readyDecks.map((d) => el('option', { value: d.id }, d.name)),
       el('option', { value: 'random' }, '🎲 ランダムデッキ'),
     );
