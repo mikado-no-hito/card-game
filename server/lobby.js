@@ -41,6 +41,7 @@ export class Lobby {
       case C2S.CREATE_ROOM: return this._createRoom(player, payload);
       case C2S.JOIN_ROOM:   return this._joinRoom(player, payload);
       case C2S.GAME_ACTION: return this._handleAction(player, payload);
+      case C2S.STAMP:       return this._handleStamp(player, payload);
       case C2S.LEAVE:       return this._leave(player);
       default:
         this._send(player, S2C.ERROR, { message: `未知のメッセージ種別: ${type}` });
@@ -106,6 +107,17 @@ export class Lobby {
       if (pid === player.id) continue;
       const opp = this.players.get(pid);
       if (opp) this._send(opp, S2C.GAME_ACTION, { from: player.id, ...payload });
+    }
+  }
+
+  // --- スタンプ中継 -----------------------------------------
+  _handleStamp(player, payload) {
+    const room = player.roomId && this.rooms.get(player.roomId);
+    if (!room) return;
+    for (const pid of room.players) {
+      if (pid === player.id) continue;
+      const opp = this.players.get(pid);
+      if (opp) this._send(opp, S2C.STAMP, { stamp: payload.stamp });
     }
   }
 

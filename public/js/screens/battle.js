@@ -13,6 +13,17 @@ import { isDeckComplete } from '../models.js';
 import { orientation } from '../orientation.js';
 import { C2S, S2C, NET_STATE } from '../protocol.js';
 
+const STAMPS = [
+  { id: 'like',   emoji: '👍', label: 'いいね' },
+  { id: 'dame',   emoji: '🙅', label: 'だめぇぇぇ！' },
+  { id: 'unko',   emoji: '💩', label: 'うんこ！' },
+  { id: 'lol',    emoji: '😂', label: '爆笑' },
+  { id: 'point',  emoji: '👉', label: '指さし' },
+  { id: 'chinko', emoji: '🍆', label: 'ちんこ' },
+  { id: 'win',    emoji: '🏆', label: '勝ち！' },
+  { id: 'lose',   emoji: '😭', label: '負け' },
+];
+
 export class BattleScreen extends Screen {
   mount() {
     orientation.setPreferred('landscape');
@@ -27,6 +38,11 @@ export class BattleScreen extends Screen {
     this.glowCardId = null;     // 赤光りアニメ中のカードID
     this.enlargedCard = null;   // 拡大表示中のカード { card, label }
     this.oppProfile = null;     // 相手のプロフィール（オンライン時）
+    this.showStampPicker = false;
+    this.receivedStamp = null;
+    this.sentStamp = null;
+    this._receivedStampTimer = null;
+    this._sentStampTimer = null;
 
     this.statusEl = el('span.status');
     this.body = el('div.battle-body');
@@ -49,6 +65,7 @@ export class BattleScreen extends Screen {
     this.addCleanup(net.on(S2C.GAME_ACTION,   (p) => this.engine && this.engine.remote(p)));
     this.addCleanup(net.on(S2C.OPPONENT_LEFT, () => { alert('相手が退出しました。'); this._exit(); }));
     this.addCleanup(net.on(S2C.ERROR,         (p) => alert(p.message || 'エラー')));
+    this.addCleanup(net.on(S2C.STAMP,         (p) => this._onReceiveStamp(p)));
 
     net.connect();
     this._renderLobby();
@@ -376,7 +393,11 @@ export class BattleScreen extends Screen {
     const showScoreboard = s.status !== 'prep';
 
     this.body.replaceChildren(
-      el('section.game', {}, showScoreboard ? this._scoreboard(s) : null, main),
+      el('section.game', {},
+        showScoreboard ? this._scoreboard(s) : null,
+        main,
+        s.status !== 'gameover' ? this._renderStampOverlay() : null,
+      ),
       confirmOverlay,
       enlargedOverlay,
     );
@@ -624,5 +645,54 @@ export class BattleScreen extends Screen {
     if (this.cpu) this.cpu.reset();
     if (!this.vsCPU && net.state === NET_STATE.CONNECTED) net.send(C2S.LEAVE);
     this.app.navigate('/home');
+  }
+
+  // ---------- スタンプ ----------
+  _renderStampOverlay() {
+    const recvData = STAMPS.find((s) => s.id === this.receivedStamp);
+    const sentData = STAMPS.find((s) => s.id === this.sentStamp);
+
+    return el('div.stamp-area', {},
+      recvData ? el('div.stamp-popup stamp-opp', {},
+        el('span.stamp-emoji', {}, recvData.emoji),
+        el('span.stamp-label', {}, recvData.label),
+      ) : null,
+      sentData ? el('div.stamp-popup stamp-me', {},
+        el('span.stamp-emoji', {}, sentData.emoji),
+        el('span.stamp-label', {}, sentData.label),
+      ) : null,
+      el('button.stamp-btn', {
+        onclick: (e) => {
+          e.stopPropagation();
+          this.showStampPicker = !this.showStampPicker;
+          this._renderGame();
+        },
+      }, '💬'),
+      this.showStampPicker ? el('div.stamp-picker', {},
+        ...STAMPS.map((item) => el('button.stamp-choice', {
+          onclick: () => this._sendStamp(item.id),
+          title: item.label,
+        },
+          el('span.stamp-emoji-sm', {}, item.emoji),
+          el('span.stamp-choice-label', {}, item.label),
+        )),
+      ) : null,
+    );
+  }
+
+  _sendStamp(id) {
+    this.showStampPicker = false;
+    if (this._sentStampTimer) clearTimeout(this._sentStampTimer);
+    this.sentStamp = id;
+    if (!this.vsCPU) net.send(C2S.STAMP, { stamp: id });
+    this._renderGame();
+    this._sentStampTimer = setTimeout(() => { this.sentStamp = null; this._renderGame(); }, 2500);
+  }
+
+  _onReceiveStamp({ stamp }) {
+    if (this._receivedStampTimer) clearTimeout(this._receivedStampTimer);
+    this.receivedStamp = stamp;
+    this._renderGame();
+    this._receivedStampTimer = setTimeout(() => { this.receivedStamp = null; this._renderGame(); }, 2500);
   }
 }

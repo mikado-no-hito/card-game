@@ -13,6 +13,7 @@ export const C2S = {
   JOIN_ROOM:   'lobby:join',   // パスワード部屋へ参加 { deck, password }
   LEAVE:       'lobby:leave',  // 部屋/対戦から離脱
   GAME_ACTION: 'game:action',  // 対戦中の操作を相手へ中継 { ... 自由 }
+  STAMP:       'game:stamp',   // スタンプを送る { stamp }
 };
 
 // サーバー → クライアント
@@ -23,6 +24,7 @@ export const S2C = {
   GAME_START:   'game:start',      // 対戦開始      { roomId, you, opponent, seed, first, opponentDeck }
   GAME_ACTION:  'game:action',     // 相手の操作を受信 { ... 自由 }
   OPPONENT_LEFT:'game:opponentLeft',
+  STAMP:        'game:stamp',      // 相手のスタンプを受信 { stamp }
   ERROR:        'sys:error',       // エラー通知    { message }
 };
 
