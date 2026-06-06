@@ -314,13 +314,13 @@ select option { background: var(--surface); }
 /* ============================================================
    カード作成
    ============================================================ */
-.creator-screen-body { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
 .creator { display: grid; grid-template-columns: 1fr 220px; gap: 24px; flex: 1; min-height: 0; overflow: hidden; padding: 16px; }
-.creator-form { overflow-y: auto; min-height: 0; padding-right: 4px; }
+.creator .form { overflow-y: auto; min-height: 0; padding-right: 4px; }
 .preview-wrap { position: sticky; top: 0; overflow-y: auto; }
 .preview-caption { font-size: .83rem; color: var(--text-dim); margin-bottom: 6px; }
 @media (max-width: 720px) {
-  .creator { grid-template-columns: 1fr; }
+  .creator { grid-template-columns: 1fr; overflow-y: auto; overflow-x: hidden; }
+  .creator .form { overflow-y: visible; min-height: unset; }
   .preview-wrap { position: static; }
   .card-preview { max-width: 200px; margin-left: auto; margin-right: auto; }
 }
