@@ -1,0 +1,13 @@
+{
+  "name": "card-game",
+  "version": "0.1.0",
+  "description": "友達とリアルタイム対戦できるオリジナルカードゲームの土台（依存パッケージなし）",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

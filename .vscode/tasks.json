@@ -1,0 +1,15 @@
+{
+  // メニュー [ターミナル] > [タスクの実行] から起動できます。
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "サーバー起動 (node server.js)",
+      "type": "shell",
+      "command": "node server.js",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  // このプロジェクトに必須の拡張機能はありません（Node.js だけで動きます）。
+  // 日本語表示にしたい場合のおすすめのみ記載しています。
+  "recommendations": [
+    "MS-CEINTL.vscode-language-pack-ja"
+  ]
+}
