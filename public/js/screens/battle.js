@@ -77,13 +77,27 @@ const STAMPS = [
     </svg>`) },
   { id: 'chinko', label: 'ちんこ', src: _S(
     `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <rect width="64" height="64" rx="14" fill="#2d1b5e"/>
-    <ellipse cx="32" cy="43" rx="15" ry="18" fill="#7c3aed"/>
-    <ellipse cx="28" cy="33" rx="7" ry="9" fill="#8b5cf6"/>
-    <rect x="28" y="18" width="8" height="13" rx="4" fill="#15803d"/>
-    <path d="M32 21 Q43 14 45 23" stroke="#16a34a" stroke-width="4" stroke-linecap="round" fill="none"/>
-    <path d="M32 21 Q21 12 19 21" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-    <ellipse cx="24" cy="37" rx="3" ry="6" fill="rgba(255,255,255,0.2)" transform="rotate(-15 24 37)"/>
+    <rect width="64" height="64" rx="14" fill="#1a0a1e"/>
+    <rect x="23" y="22" width="18" height="30" rx="9" fill="#f0a07a"/>
+    <ellipse cx="32" cy="20" rx="10" ry="9" fill="#f4a882"/>
+    <ellipse cx="29" cy="13" rx="5" ry="3" fill="rgba(255,255,255,0.3)" transform="rotate(-25 29 13)"/>
+    <ellipse cx="32" cy="52" rx="11" ry="5" fill="#e08858"/>
+    <line x1="32" y1="28" x2="32" y2="48" stroke="#d07848" stroke-width="1.5" stroke-linecap="round"/>
+    <ellipse cx="17" cy="38" rx="6" ry="4" fill="#f0a07a"/>
+    <ellipse cx="47" cy="38" rx="6" ry="4" fill="#f0a07a"/>
+    <circle cx="13" cy="38" r="4" fill="#e89068"/>
+    <circle cx="51" cy="38" r="4" fill="#e89068"/>
+    <line x1="27" y1="16" x2="29" y2="18" stroke="#a04828" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="35" y1="18" x2="37" y2="16" stroke="#a04828" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="28" cy="19" r="2" fill="#a04828"/>
+    <circle cx="36" cy="19" r="2" fill="#a04828"/>
+    <path d="M28 23 Q32 27 36 23" stroke="#a04828" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="21" rx="3" ry="1.8" fill="#f87171" opacity="0.55"/>
+    <ellipse cx="40" cy="21" rx="3" ry="1.8" fill="#f87171" opacity="0.55"/>
+    <path d="M8 11 L9 7 L10 11 L14 12 L10 13 L9 17 L8 13 L4 12Z" fill="#fbbf24" opacity="0.9"/>
+    <path d="M54 7 L55 4 L56 7 L59 8 L56 9 L55 12 L54 9 L51 8Z" fill="#fbbf24" opacity="0.85"/>
+    <circle cx="57" cy="19" r="1.5" fill="#fbbf24" opacity="0.7"/>
+    <circle cx="8" cy="22" r="1.2" fill="#fbbf24" opacity="0.6"/>
     </svg>`) },
   { id: 'win', label: '勝ち！', src: _S(
     `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
